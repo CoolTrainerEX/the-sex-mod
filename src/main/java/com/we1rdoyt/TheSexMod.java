@@ -5,6 +5,10 @@ import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.we1rdoyt.item.ModItemGroups;
+import com.we1rdoyt.item.ModItems;
+import com.we1rdoyt.potion.ModPotions;
+
 public class TheSexMod implements ModInitializer {
 	public static final String MOD_ID = "the-sex-mod";
 
@@ -21,6 +25,7 @@ public class TheSexMod implements ModInitializer {
 
 		LOGGER.info("Hello Fabric world!");
 
+		ModPotions.initialize();
 		ModItems.initialize();
 		ModItemGroups.initialize();
 	}

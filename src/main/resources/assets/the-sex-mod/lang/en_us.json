@@ -1,4 +1,16 @@
 {
-  "item.the-sex-mod.sex_potion": "Sex Potion",
+  "item.the-sex-mod.opium": "Opium",
+  "item.the-sex-mod.condom": "Condom",
+  "item.the-sex-mod.rubber": "Rubber",
+  "item.the-sex-mod.condom_helmet": "Condom Helmet",
+  "item.the-sex-mod.condom_chestplate": "Condom Chestplate",
+  "item.the-sex-mod.condom_leggings": "Condom Leggings",
+  "item.the-sex-mod.condom_boots": "Condom Boots",
+  "item.the-sex-mod.condom_horse_armor": "Condom Horse Armor",
+  "item.minecraft.tipped_arrow.effect.sex": "Arrow of Sex",
+  "item.minecraft.potion.effect.sex": "Potion of Sex",
+  "item.minecraft.splash_potion.effect.sex": "Splash Potion of Sex",
+  "item.minecraft.lingering_potion.effect.sex": "Lingering Potion of Sex",
+  "effect.the-sex-mod.libido": "Libido",
   "itemGroup.the-sex-mod": "The Sex Mod"
 }
