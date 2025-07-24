@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "the-sex-mod",
+	"version": "${version}",
+	"name": "The Sex Mod",
+	"description": "This is The Sex Mod",
+	"authors": [
+		"CoolTrainerEX"
+	],
+	"contact": {
+		"homepage": "https://we1rdoyt.github.io/",
+		"sources": "https://github.com/CoolTrainerEX/the-sex-mod"
+	},
+	"license": "CC BY-NC-ND 4.0",
+	"icon": "assets/the-sex-mod/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.we1rdoyt.TheSexMod"
+		],
+		"client": [
+			"com.we1rdoyt.TheSexModClient"
+		]
+	},
+	"mixins": [
+		"the-sex-mod.mixins.json",
+		{
+			"config": "the-sex-mod.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.8",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
