@@ -12,6 +12,8 @@ import net.minecraft.util.Identifier;
 public class ModStatusEffects {
     public static final RegistryEntry<StatusEffect> LIBIDO = register("libido",
             new LibidoStatusEffect(StatusEffectCategory.BENEFICIAL, 0xff0000));
+    public static final RegistryEntry<StatusEffect> STD = register("std",
+            new STDStatusEffect(StatusEffectCategory.HARMFUL, 0x00ff00));
 
     private static RegistryEntry<StatusEffect> register(String id, StatusEffect statusEffect) {
         return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(TheSexMod.MOD_ID, id), statusEffect);

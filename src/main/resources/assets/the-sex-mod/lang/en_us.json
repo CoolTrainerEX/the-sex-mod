@@ -11,6 +11,9 @@
   "item.minecraft.potion.effect.sex": "Potion of Sex",
   "item.minecraft.splash_potion.effect.sex": "Splash Potion of Sex",
   "item.minecraft.lingering_potion.effect.sex": "Lingering Potion of Sex",
+  "item.the-sex-mod.consent": "Consent",
   "effect.the-sex-mod.libido": "Libido",
-  "itemGroup.the-sex-mod": "The Sex Mod"
+  "effect.the-sex-mod.std": "STD",
+  "itemGroup.the-sex-mod": "The Sex Mod",
+  "tag.item.the-sex-mod.repairs_condom_armor": "Repairs Condom Armor"
 }

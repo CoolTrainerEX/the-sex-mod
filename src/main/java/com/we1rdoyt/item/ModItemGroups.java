@@ -31,21 +31,37 @@ public class ModItemGroups {
                             entries.add(ModItems.CONDOM_LEGGINGS);
                             entries.add(ModItems.CONDOM_BOOTS);
                             entries.add(ModItems.CONDOM_HORSE_ARMOR);
-                            entries.add(PotionContentsComponent.createStack(Items.TIPPED_ARROW, ModPotions.SEX));
-                            entries.add(PotionContentsComponent.createStack(Items.TIPPED_ARROW, ModPotions.LONG_SEX));
-                            entries.add(PotionContentsComponent.createStack(Items.TIPPED_ARROW, ModPotions.STRONG_SEX));
-                            entries.add(PotionContentsComponent.createStack(Items.POTION, ModPotions.SEX));
-                            entries.add(PotionContentsComponent.createStack(Items.POTION, ModPotions.LONG_SEX));
-                            entries.add(PotionContentsComponent.createStack(Items.POTION, ModPotions.STRONG_SEX));
-                            entries.add(PotionContentsComponent.createStack(Items.SPLASH_POTION, ModPotions.SEX));
-                            entries.add(PotionContentsComponent.createStack(Items.SPLASH_POTION, ModPotions.LONG_SEX));
+                            entries.add(PotionContentsComponent.createStack(
+                                    Items.TIPPED_ARROW, ModPotions.SEX));
+                            entries.add(PotionContentsComponent.createStack(
+                                    Items.TIPPED_ARROW, ModPotions.LONG_SEX));
+                            entries.add(PotionContentsComponent.createStack(
+                                    Items.TIPPED_ARROW, ModPotions.STRONG_SEX));
+                            entries.add(PotionContentsComponent.createStack(Items.POTION,
+                                    ModPotions.SEX));
+                            entries.add(PotionContentsComponent.createStack(Items.POTION,
+                                    ModPotions.LONG_SEX));
+                            entries.add(PotionContentsComponent.createStack(Items.POTION,
+                                    ModPotions.STRONG_SEX));
+                            entries.add(PotionContentsComponent.createStack(
+                                    Items.SPLASH_POTION, ModPotions.SEX));
+                            entries.add(PotionContentsComponent.createStack(
+                                    Items.SPLASH_POTION, ModPotions.LONG_SEX));
                             entries.add(
-                                    PotionContentsComponent.createStack(Items.SPLASH_POTION, ModPotions.STRONG_SEX));
-                            entries.add(PotionContentsComponent.createStack(Items.LINGERING_POTION, ModPotions.SEX));
+                                    PotionContentsComponent.createStack(
+                                            Items.SPLASH_POTION,
+                                            ModPotions.STRONG_SEX));
+                            entries.add(PotionContentsComponent.createStack(
+                                    Items.LINGERING_POTION, ModPotions.SEX));
                             entries.add(
-                                    PotionContentsComponent.createStack(Items.LINGERING_POTION, ModPotions.LONG_SEX));
+                                    PotionContentsComponent.createStack(
+                                            Items.LINGERING_POTION,
+                                            ModPotions.LONG_SEX));
                             entries.add(
-                                    PotionContentsComponent.createStack(Items.LINGERING_POTION, ModPotions.STRONG_SEX));
+                                    PotionContentsComponent.createStack(
+                                            Items.LINGERING_POTION,
+                                            ModPotions.STRONG_SEX));
+                            entries.add(ModItems.CONSENT);
                         }).build());
     }
 
