@@ -1,7 +1,6 @@
 package com.we1rdoyt.item.equipment;
 
 import com.we1rdoyt.TheSexMod;
-
 import net.minecraft.item.equipment.EquipmentAsset;
 import net.minecraft.item.equipment.EquipmentAssetKeys;
 import net.minecraft.registry.RegistryKey;

@@ -3,7 +3,6 @@ package com.we1rdoyt.potion;
 import com.we1rdoyt.TheSexMod;
 import com.we1rdoyt.entity.effect.ModStatusEffects;
 import com.we1rdoyt.item.ModItems;
-
 import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Items;

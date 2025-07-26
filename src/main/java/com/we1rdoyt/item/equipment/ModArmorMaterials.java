@@ -1,10 +1,8 @@
 package com.we1rdoyt.item.equipment;
 
 import java.util.Map;
-
 import com.google.common.collect.Maps;
 import com.we1rdoyt.registry.tag.ModItemTags;
-
 import net.minecraft.item.equipment.ArmorMaterial;
 import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.sound.SoundEvents;

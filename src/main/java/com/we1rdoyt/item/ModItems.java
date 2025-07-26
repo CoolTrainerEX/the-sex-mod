@@ -2,7 +2,6 @@ package com.we1rdoyt.item;
 
 import com.we1rdoyt.TheSexMod;
 import com.we1rdoyt.item.equipment.ModArmorMaterials;
-
 import net.minecraft.component.type.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -42,5 +41,4 @@ public class ModItems extends Items {
     public static Item register(String id) {
         return register(keyOf(id), Item::new, new Item.Settings());
     }
-
 }

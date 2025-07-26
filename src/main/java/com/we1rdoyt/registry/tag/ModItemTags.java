@@ -1,7 +1,6 @@
 package com.we1rdoyt.registry.tag;
 
 import com.we1rdoyt.TheSexMod;
-
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
