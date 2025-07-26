@@ -49,9 +49,11 @@ public class ModItemGroups {
                                     PotionContentsComponent.createStack(Items.LINGERING_POTION, ModPotions.STRONG_SEX));
                             entries.add(ModItems.CONSENT);
                         }).build());
+
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
             entries.add(ModItems.CONSENT);
         });
+
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
             entries.add(ModItems.CONDOM_HELMET);
             entries.add(ModItems.CONDOM_CHESTPLATE);
@@ -60,6 +62,7 @@ public class ModItemGroups {
             entries.add(ModItems.CONDOM_BOOTS);
             entries.add(ModItems.CONDOM_HORSE_ARMOR);
         });
+
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
             entries.add(ModItems.OPIUM);
             entries.add(ModItems.RUBBER);

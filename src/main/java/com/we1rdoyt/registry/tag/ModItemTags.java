@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 
 public final class ModItemTags {
     public static final TagKey<Item> REPAIRS_CONDOM_ARMOR = of("repairs_condom_armor");
+    public static final TagKey<Item> STD_RESISTANT = of("condom");
 
     private static TagKey<Item> of(String id) {
         return TagKey.of(RegistryKeys.ITEM, Identifier.of(TheSexMod.MOD_ID, id));
