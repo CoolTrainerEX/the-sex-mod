@@ -2,15 +2,10 @@ package com.we1rdoyt;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.component.ComponentChanges;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsage;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
 
 import java.util.function.Predicate;
 
@@ -57,10 +52,7 @@ public class TheSexMod implements ModInitializer {
 										.getEntityInteractionRange() * player.getEntityInteractionRange())) {
 							player.getInventory().removeOne(itemStack);
 							itemStack.remove(ModDataComponentTypes.TARGET_ENTITY);
-
-							if (!player.isCreative())
-								player.getInventory().offerOrDrop(itemStack);
-
+							player.getInventory().offerOrDrop(itemStack);
 							player.sendMessage(entity == null
 									? Text.translatable("item.the-sex-mod.consent.message.entity_does_not_exist")
 									: Text.translatable("item.the-sex-mod.consent.message.out_of_range",
@@ -68,35 +60,6 @@ public class TheSexMod implements ModInitializer {
 									true);
 						}
 					}
-		});
-
-		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-			ItemStack itemStack = player.getStackInHand(hand);
-
-			if (world.isClient || !entity.isLiving() || !itemStack.isOf(ModItems.CONSENT))
-				return ActionResult.PASS;
-
-			if (entity.isPlayer()) {
-				itemStack.decrementUnlessCreative(1, player);
-				player.sendMessage(Text.of("player-player"), false);
-			} else if (player.isSneaking()) {
-				ItemUsage.exchangeStack(itemStack, player, new ItemStack(Registries.ITEM.getEntry(ModItems.CONSENT), 1,
-						ComponentChanges.builder().add(ModDataComponentTypes.TARGET_ENTITY, entity.getUuid()).build()));
-				return ActionResult.CONSUME;
-			} else if (itemStack.contains(ModDataComponentTypes.TARGET_ENTITY)) {
-				if (itemStack.get(ModDataComponentTypes.TARGET_ENTITY).equals(entity.getUuid())) {
-					player.sendMessage(Text.translatable("item.the-sex-mod.consent.message.same_entity"), true);
-					return ActionResult.PASS;
-				}
-
-				itemStack.decrement(1);
-				player.sendMessage(Text.of("entity-entity"), false);
-			} else {
-				itemStack.decrementUnlessCreative(1, player);
-				player.sendMessage(Text.of("player-entity"), false);
-			}
-
-			return ActionResult.SUCCESS;
 		});
 	}
 }
