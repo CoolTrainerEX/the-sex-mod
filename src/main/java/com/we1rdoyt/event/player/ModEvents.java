@@ -1,12 +1,19 @@
 package com.we1rdoyt.event.player;
 
+import java.util.function.Predicate;
+
 import com.we1rdoyt.component.ModDataComponentTypes;
 import com.we1rdoyt.item.ModItems;
+
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.component.ComponentChanges;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
 import net.minecraft.registry.Registries;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 
 public class ModEvents {
@@ -31,6 +38,27 @@ public class ModEvents {
 
             itemStack.decrementUnlessCreative(1, player);
             return ActionResult.SUCCESS.withNewHandStack(itemStack);
+        });
+
+        ServerTickEvents.START_SERVER_TICK.register(client -> {
+            Predicate<ItemStack> isFilledConsent = itemStack -> itemStack.isOf(ModItems.CONSENT)
+                    && itemStack.contains(ModDataComponentTypes.TARGET_ENTITY);
+
+            for (ServerPlayerEntity player : client.getPlayerManager().getPlayerList())
+                if (player.getInventory().contains(isFilledConsent))
+                    for (ItemStack itemStack : player.getInventory().getMainStacks()) {
+                        Entity entity = player.getWorld().getEntity(itemStack.get(ModDataComponentTypes.TARGET_ENTITY));
+
+                        if (isFilledConsent.test(itemStack) && player.getEyePos().squaredDistanceTo(entity
+                                .getPos()) > player.getEntityInteractionRange() * player.getEntityInteractionRange()) {
+                            itemStack.remove(ModDataComponentTypes.TARGET_ENTITY);
+                            player.getInventory().removeOne(itemStack);
+                            player.getInventory().offerOrDrop(itemStack);
+                            player.sendMessage(
+                                    Text.translatable("message.the-sex-mod.consent_out_of_range", entity.getName()),
+                                    true);
+                        }
+                    }
         });
     }
 }

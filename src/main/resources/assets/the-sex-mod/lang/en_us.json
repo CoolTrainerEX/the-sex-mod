@@ -15,6 +15,7 @@
   "effect.the-sex-mod.libido": "Libido",
   "effect.the-sex-mod.std": "STD",
   "itemGroup.the-sex-mod": "The Sex Mod",
-  "tag.item.the-sex-mod.condom": "Condom",
-  "tag.item.the-sex-mod.repairs_condom_armor": "Repairs Condom Armor"
+  "tag.item.the-sex-mod.repairs_condom_armor": "Repairs Condom Armor",
+  "tag.item.the-sex-mod.std_resistant": "STD Resistant",
+  "message.the-sex-mod.consent_out_of_range": "%s is out of range"
 }
