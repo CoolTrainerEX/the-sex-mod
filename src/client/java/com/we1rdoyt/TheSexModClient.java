@@ -1,10 +1,25 @@
 package com.we1rdoyt;
 
+import com.we1rdoyt.component.ModDataComponentTypes;
+import com.we1rdoyt.item.ModItems;
+
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
 
 public class TheSexModClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
+		// This entrypoint is suitable for setting up client-specific logic, such as
+		// rendering.
+
+		ItemTooltipCallback.EVENT.register((stack, tooltipContext, tooltipType, lines) -> {
+			if (!stack.isOf(ModItems.CONSENT) || !stack.contains(ModDataComponentTypes.TARGET_ENTITY))
+				return;
+
+			lines.add(Text.translatable("item.the-sex-mod.consent.tooltip", MinecraftClient.getInstance().world
+					.getEntity(stack.get(ModDataComponentTypes.TARGET_ENTITY)).getName()));
+		});
 	}
 }

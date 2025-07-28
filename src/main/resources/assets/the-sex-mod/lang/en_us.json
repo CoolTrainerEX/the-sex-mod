@@ -1,5 +1,9 @@
 {
   "item.the-sex-mod.consent": "Consent",
+  "item.the-sex-mod.consent.tooltip": "Selected: %s",
+  "item.the-sex-mod.consent.message.entity_does_not_exist": "Entity does not exist",
+  "item.the-sex-mod.consent.message.out_of_range": "%s is out of range",
+  "item.the-sex-mod.consent.message.same_entity": "Cannot target the same entity",
   "item.the-sex-mod.condom": "Condom",
   "item.the-sex-mod.rubber": "Rubber",
   "item.the-sex-mod.condom_helmet": "Condom Helmet",
@@ -16,6 +20,5 @@
   "effect.the-sex-mod.std": "STD",
   "itemGroup.the-sex-mod": "The Sex Mod",
   "tag.item.the-sex-mod.repairs_condom_armor": "Repairs Condom Armor",
-  "tag.item.the-sex-mod.std_resistant": "STD Resistant",
-  "message.the-sex-mod.consent_out_of_range": "%s is out of range"
+  "tag.item.the-sex-mod.std_resistant": "STD Resistant"
 }

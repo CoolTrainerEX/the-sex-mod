@@ -1,12 +1,23 @@
 package com.we1rdoyt;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.minecraft.component.ComponentChanges;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
+import net.minecraft.registry.Registries;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+
+import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.we1rdoyt.component.ModDataComponentTypes;
-import com.we1rdoyt.event.player.ModEvents;
 import com.we1rdoyt.item.ModItemGroups;
 import com.we1rdoyt.item.ModItems;
 import com.we1rdoyt.potion.ModPotions;
@@ -31,6 +42,61 @@ public class TheSexMod implements ModInitializer {
 		ModItems.initialize();
 		ModItemGroups.initialize();
 		ModDataComponentTypes.initialize();
-		ModEvents.initialize();
+
+		ServerTickEvents.START_SERVER_TICK.register(client -> {
+			Predicate<ItemStack> isFilledConsent = itemStack -> itemStack.isOf(ModItems.CONSENT)
+					&& itemStack.contains(ModDataComponentTypes.TARGET_ENTITY);
+
+			for (ServerPlayerEntity player : client.getPlayerManager().getPlayerList())
+				if (player.getInventory().contains(isFilledConsent))
+					for (ItemStack itemStack : player.getInventory().getMainStacks()) {
+						Entity entity = player.getWorld().getEntity(itemStack.get(ModDataComponentTypes.TARGET_ENTITY));
+
+						if (isFilledConsent.test(itemStack)
+								&& (entity == null || player.getEyePos().squaredDistanceTo(entity.getPos()) > player
+										.getEntityInteractionRange() * player.getEntityInteractionRange())) {
+							player.getInventory().removeOne(itemStack);
+							itemStack.remove(ModDataComponentTypes.TARGET_ENTITY);
+
+							if (!player.isCreative())
+								player.getInventory().offerOrDrop(itemStack);
+
+							player.sendMessage(entity == null
+									? Text.translatable("item.the-sex-mod.consent.message.entity_does_not_exist")
+									: Text.translatable("item.the-sex-mod.consent.message.out_of_range",
+											entity.getName()),
+									true);
+						}
+					}
+		});
+
+		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+			ItemStack itemStack = player.getStackInHand(hand);
+
+			if (world.isClient || !entity.isLiving() || !itemStack.isOf(ModItems.CONSENT))
+				return ActionResult.PASS;
+
+			if (entity.isPlayer()) {
+				itemStack.decrementUnlessCreative(1, player);
+				player.sendMessage(Text.of("player-player"), false);
+			} else if (player.isSneaking()) {
+				ItemUsage.exchangeStack(itemStack, player, new ItemStack(Registries.ITEM.getEntry(ModItems.CONSENT), 1,
+						ComponentChanges.builder().add(ModDataComponentTypes.TARGET_ENTITY, entity.getUuid()).build()));
+				return ActionResult.CONSUME;
+			} else if (itemStack.contains(ModDataComponentTypes.TARGET_ENTITY)) {
+				if (itemStack.get(ModDataComponentTypes.TARGET_ENTITY).equals(entity.getUuid())) {
+					player.sendMessage(Text.translatable("item.the-sex-mod.consent.message.same_entity"), true);
+					return ActionResult.PASS;
+				}
+
+				itemStack.decrement(1);
+				player.sendMessage(Text.of("entity-entity"), false);
+			} else {
+				itemStack.decrementUnlessCreative(1, player);
+				player.sendMessage(Text.of("player-entity"), false);
+			}
+
+			return ActionResult.SUCCESS;
+		});
 	}
 }
