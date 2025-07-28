@@ -23,8 +23,7 @@ public class ModItemGroups {
         Registry.register(Registries.ITEM_GROUP, SEX_ITEMS,
                 FabricItemGroup.builder().displayName(Text.translatable("itemGroup.the-sex-mod"))
                         .icon(() -> new ItemStack(ModItems.OPIUM)).entries((itemContext, entries) -> {
-                            entries.add(Items.POPPY);
-                            entries.add(ModItems.OPIUM);
+                            entries.add(ModItems.CONSENT);
                             entries.add(ModItems.RUBBER);
                             entries.add(ModItems.CONDOM);
                             entries.add(ModItems.CONDOM_HELMET);
@@ -32,6 +31,8 @@ public class ModItemGroups {
                             entries.add(ModItems.CONDOM_LEGGINGS);
                             entries.add(ModItems.CONDOM_BOOTS);
                             entries.add(ModItems.CONDOM_HORSE_ARMOR);
+                            entries.add(Items.POPPY);
+                            entries.add(ModItems.OPIUM);
                             entries.add(PotionContentsComponent.createStack(Items.TIPPED_ARROW, ModPotions.SEX));
                             entries.add(PotionContentsComponent.createStack(Items.TIPPED_ARROW, ModPotions.LONG_SEX));
                             entries.add(PotionContentsComponent.createStack(Items.TIPPED_ARROW, ModPotions.STRONG_SEX));
@@ -47,7 +48,6 @@ public class ModItemGroups {
                                     PotionContentsComponent.createStack(Items.LINGERING_POTION, ModPotions.LONG_SEX));
                             entries.add(
                                     PotionContentsComponent.createStack(Items.LINGERING_POTION, ModPotions.STRONG_SEX));
-                            entries.add(ModItems.CONSENT);
                         }).build());
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {

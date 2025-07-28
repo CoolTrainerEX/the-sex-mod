@@ -1,5 +1,5 @@
 {
-  "item.the-sex-mod.opium": "Opium",
+  "item.the-sex-mod.consent": "Consent",
   "item.the-sex-mod.condom": "Condom",
   "item.the-sex-mod.rubber": "Rubber",
   "item.the-sex-mod.condom_helmet": "Condom Helmet",
@@ -11,10 +11,10 @@
   "item.minecraft.potion.effect.sex": "Potion of Sex",
   "item.minecraft.splash_potion.effect.sex": "Splash Potion of Sex",
   "item.minecraft.lingering_potion.effect.sex": "Lingering Potion of Sex",
-  "item.the-sex-mod.consent": "Consent",
+  "item.the-sex-mod.opium": "Opium",
   "effect.the-sex-mod.libido": "Libido",
   "effect.the-sex-mod.std": "STD",
   "itemGroup.the-sex-mod": "The Sex Mod",
-  "tag.item.the-sex-mod.repairs_condom_armor": "Repairs Condom Armor",
-  "tag.item.the-sex-mod.condom": "Condom"
+  "tag.item.the-sex-mod.condom": "Condom",
+  "tag.item.the-sex-mod.repairs_condom_armor": "Repairs Condom Armor"
 }

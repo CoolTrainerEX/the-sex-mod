@@ -17,7 +17,7 @@ public class LibidoStatusEffect extends StatusEffect {
     @Override
     public void onApplied(LivingEntity entity, int amplifier) {
         if (entity.getRandom().nextDouble() < stdChance)
-            entity.addStatusEffect(new StatusEffectInstance(ModStatusEffects.STD, 3600));
+            entity.addStatusEffect(new StatusEffectInstance(ModStatusEffects.STD, StatusEffectInstance.INFINITE));
 
         super.onApplied(entity, amplifier);
     }

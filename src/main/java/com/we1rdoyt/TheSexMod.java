@@ -5,6 +5,8 @@ import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.we1rdoyt.component.ModDataComponentTypes;
+import com.we1rdoyt.event.player.ModEvents;
 import com.we1rdoyt.item.ModItemGroups;
 import com.we1rdoyt.item.ModItems;
 import com.we1rdoyt.potion.ModPotions;
@@ -28,5 +30,7 @@ public class TheSexMod implements ModInitializer {
 		ModPotions.initialize();
 		ModItems.initialize();
 		ModItemGroups.initialize();
+		ModDataComponentTypes.initialize();
+		ModEvents.initialize();
 	}
 }

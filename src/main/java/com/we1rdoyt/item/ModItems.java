@@ -2,7 +2,6 @@ package com.we1rdoyt.item;
 
 import com.we1rdoyt.TheSexMod;
 import com.we1rdoyt.item.equipment.ModArmorMaterials;
-import net.minecraft.component.type.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.equipment.EquipmentType;
@@ -11,8 +10,8 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 
 public class ModItems extends Items {
-    public static final Item OPIUM = register("opium",
-            new Item.Settings().food(new FoodComponent.Builder().alwaysEdible().build()));
+    public static final Item CONSENT = register("consent",
+            new Item.Settings().maxCount(16).useCooldown(1));
     public static final Item RUBBER = register("rubber");
     public static final Item CONDOM = register("condom");
     public static final Item CONDOM_HELMET = register("condom_helmet",
@@ -25,7 +24,7 @@ public class ModItems extends Items {
             new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.BOOTS));
     public static final Item CONDOM_HORSE_ARMOR = register("condom_horse_armor",
             new Item.Settings().horseArmor(ModArmorMaterials.CONDOM));
-    public static final Item CONSENT = register("consent", new Item.Settings());
+    public static final Item OPIUM = register("opium");
 
     public static void initialize() {
     }
