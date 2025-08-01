@@ -13,20 +13,19 @@ import net.minecraft.util.Identifier;
 
 public class ModItems extends Items {
         public static final Item CONSENT = register("consent", ConsentItem::new,
-                        new Item.Settings().maxCount(16).useCooldown(1));
-        public static final Item RUBBER = register("rubber");
-        public static final Item CONDOM = register("condom");
-        public static final Item CONDOM_HELMET = register("condom_helmet",
-                        new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.HELMET));
-        public static final Item CONDOM_CHESTPLATE = register("condom_chestplate",
-                        new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.CHESTPLATE));
-        public static final Item CONDOM_LEGGINGS = register("condom_leggings",
-                        new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.LEGGINGS));
-        public static final Item CONDOM_BOOTS = register("condom_boots",
-                        new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.BOOTS));
-        public static final Item CONDOM_HORSE_ARMOR = register("condom_horse_armor",
-                        new Item.Settings().horseArmor(ModArmorMaterials.CONDOM));
-        public static final Item OPIUM = register("opium");
+                        new Item.Settings().maxCount(16).useCooldown(1)), RUBBER = register("rubber"),
+                        CONDOM = register("condom"),
+                        CONDOM_HELMET = register("condom_helmet",
+                                        new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.HELMET)),
+                        CONDOM_CHESTPLATE = register("condom_chestplate",
+                                        new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.CHESTPLATE)),
+                        CONDOM_LEGGINGS = register("condom_leggings",
+                                        new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.LEGGINGS)),
+                        CONDOM_BOOTS = register("condom_boots",
+                                        new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.BOOTS)),
+                        CONDOM_HORSE_ARMOR = register("condom_horse_armor",
+                                        new Item.Settings().horseArmor(ModArmorMaterials.CONDOM)),
+                        OPIUM = register("opium");
 
         public static void initialize() {
         }

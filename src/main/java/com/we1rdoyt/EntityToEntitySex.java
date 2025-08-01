@@ -5,12 +5,15 @@ import com.we1rdoyt.entity.effect.STDStatusEffect;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.random.Random;
 
 public class EntityToEntitySex implements Sex {
     private final LivingEntity entity, target;
     private final boolean consent;
     private boolean started = false, ended = false;
+    private int tick = 0, sexBar = 0, sexHealth = MAX_SEX_HEALTH;
 
     public EntityToEntitySex(LivingEntity entity, LivingEntity target) {
         this.entity = entity;
@@ -23,7 +26,7 @@ public class EntityToEntitySex implements Sex {
                 chance += (entity.getStatusEffect(ModStatusEffects.LIBIDO).getAmplifier() + 1) * 0.25;
 
             if (entity.getRandom().nextDouble() < chance) {
-                Sex.noConsentParticles(livingEntity, (ServerWorld) livingEntity.getWorld());
+                Sex.entityParticles(livingEntity, ParticleTypes.ANGRY_VILLAGER, (ServerWorld) livingEntity.getWorld());
                 consent = false;
                 return;
             }
@@ -59,14 +62,30 @@ public class EntityToEntitySex implements Sex {
 
     @Override
     public void startSex() {
-        entity.startRiding(target);
+        entity.startRiding(target, true);
         started = true;
     }
 
     @Override
     public boolean tick() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'tick'");
+        if (entity.isRemoved() || target.isRemoved() || !target.hasPassenger(entity) || sexBar >= MAX_SEX_BAR || sexHealth <= 0)
+            return false;
+
+        if (tick != 0)
+            return true;
+
+        Random random = entity.getRandom();
+
+        if (random.nextBoolean()) {
+            sexBar += random.nextInt(MAX_SEX_BAR) + 1;
+            Sex.entityParticles(entity, ParticleTypes.HAPPY_VILLAGER, (ServerWorld) entity.getWorld());
+        } else {
+            sexHealth--;
+            target.damage((ServerWorld) target.getWorld(), entity.getDamageSources().mobAttack(entity), 1);
+        }
+
+        tick = (tick + 1) % MAX_TICKS;
+        return true;
     }
 
     @Override

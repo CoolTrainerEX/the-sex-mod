@@ -1,7 +1,7 @@
 package com.we1rdoyt;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.particle.ParticleTypes;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 
 /**
@@ -10,6 +10,8 @@ import net.minecraft.server.world.ServerWorld;
  * @author CoolTrainerEX
  */
 public interface Sex {
+    public static final int MAX_TICKS = 100, MAX_SEX_BAR = 100, MAX_SEX_BAR_ADD = 10, MAX_SEX_HEALTH = 3;
+
     public LivingEntity getEntity();
 
     public LivingEntity getTarget();
@@ -23,11 +25,14 @@ public interface Sex {
     /**
      * Spawns particles to indicate that the entity does not consent
      * 
+     * @param <T>    Particle effect
+     * 
      * @param entity Entity to emit particles
      * @param world  World to emit particles in
      */
-    public static void noConsentParticles(LivingEntity entity, ServerWorld world) {
-        world.spawnParticles(ParticleTypes.ANGRY_VILLAGER, entity.getParticleX(0.5), entity.getBodyY(1),
+    public static <T extends ParticleEffect> void entityParticles(LivingEntity entity, T parameters,
+            ServerWorld world) {
+        world.spawnParticles(parameters, entity.getParticleX(0.5), entity.getBodyY(1),
                 entity.getParticleZ(0.5), 5, 0.25, 0.25, 0.25, 1);
     }
 

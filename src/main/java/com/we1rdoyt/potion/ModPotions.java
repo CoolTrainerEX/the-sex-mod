@@ -15,11 +15,10 @@ import net.minecraft.util.Identifier;
 
 public class ModPotions {
     public static final RegistryEntry<Potion> SEX = register("sex",
-            new Potion("sex", new StatusEffectInstance(ModStatusEffects.LIBIDO, 3600)));
-    public static final RegistryEntry<Potion> LONG_SEX = register("long_sex",
-            new Potion("sex", new StatusEffectInstance(ModStatusEffects.LIBIDO, 9600)));
-    public static final RegistryEntry<Potion> STRONG_SEX = register("strong_sex",
-            new Potion("sex", new StatusEffectInstance(ModStatusEffects.LIBIDO, 1800, 1)));
+            new Potion("sex", new StatusEffectInstance(ModStatusEffects.LIBIDO, 3600))),
+            LONG_SEX = register("long_sex", new Potion("sex", new StatusEffectInstance(ModStatusEffects.LIBIDO, 9600))),
+            STRONG_SEX = register("strong_sex",
+                    new Potion("sex", new StatusEffectInstance(ModStatusEffects.LIBIDO, 1800, 1)));
 
     public static void initialize() {
         FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {

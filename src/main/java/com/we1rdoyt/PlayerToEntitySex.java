@@ -6,6 +6,7 @@ import com.we1rdoyt.entity.effect.STDStatusEffect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 
 public class PlayerToEntitySex implements Sex {
@@ -23,13 +24,8 @@ public class PlayerToEntitySex implements Sex {
         if (entity.hasStatusEffect(ModStatusEffects.LIBIDO))
             chance += (entity.getStatusEffect(ModStatusEffects.LIBIDO).getAmplifier() + 1) * 0.25;
 
-        if (entity.getRandom().nextDouble() < chance) {
-            Sex.noConsentParticles(entity, (ServerWorld) entity.getWorld());
-            consent = false;
-            return;
-        }
-
-        consent = true;
+        if (!(consent = entity.getRandom().nextDouble() < chance))
+            Sex.entityParticles(entity, ParticleTypes.ANGRY_VILLAGER, (ServerWorld) entity.getWorld());
 
     }
 
@@ -60,7 +56,8 @@ public class PlayerToEntitySex implements Sex {
 
     @Override
     public void startSex() {
-        player.startRiding(entity);
+        player.startRiding(entity, true);
+        started = true;
     }
 
     @Override
@@ -93,5 +90,7 @@ public class PlayerToEntitySex implements Sex {
                     dest.addStatusEffect(new StatusEffectInstance(statusEffectInstance));
             }
         }
+
+        ended = true;
     }
 }

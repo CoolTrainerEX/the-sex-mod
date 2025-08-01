@@ -6,15 +6,20 @@ import com.we1rdoyt.entity.effect.STDStatusEffect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 
 public class PlayerToPlayerSex implements Sex {
     private final PlayerEntity player, target;
-    private final boolean consent = true;
+    private final boolean consent;
     private boolean started = false, ended = false;
 
     public PlayerToPlayerSex(PlayerEntity player, PlayerEntity target) {
         this.player = player;
         this.target = target;
+
+        if (!(consent = true))
+            Sex.entityParticles(target, ParticleTypes.ANGRY_VILLAGER, (ServerWorld) target.getWorld());
     }
 
     @Override

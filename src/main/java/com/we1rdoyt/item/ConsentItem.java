@@ -34,7 +34,8 @@ public class ConsentItem extends Item {
             TheSexMod.addSexData(user, (PlayerEntity) entity);
         else if (user.isSneaking()) {
             stack.set(ModDataComponentTypes.TARGET_ENTITY, entity.getUuid());
-            return ActionResult.SUCCESS;
+            user.setStackInHand(hand, stack);
+            return ActionResult.SUCCESS.withNewHandStack(stack);
         } else if (stack.contains(ModDataComponentTypes.TARGET_ENTITY)) {
             UUID uuid = stack.get(ModDataComponentTypes.TARGET_ENTITY);
 

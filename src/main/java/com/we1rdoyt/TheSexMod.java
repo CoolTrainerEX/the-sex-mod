@@ -82,7 +82,7 @@ public class TheSexMod implements ModInitializer {
 	}
 
 	/**
-	 * Adds to {@link #SEX_LIST} if {@link Sex#getConsent()} returns true
+	 * Adds to {@link #SEX_LIST} if {@link Sex#getConsent} returns true
 	 * 
 	 * @param player Player to sex
 	 * @param target Target player to sex
@@ -95,7 +95,7 @@ public class TheSexMod implements ModInitializer {
 	}
 
 	/**
-	 * Adds to {@link #SEX_LIST} if {@link Sex#getConsent()} returns true
+	 * Adds to {@link #SEX_LIST} if {@link Sex#getConsent} returns true
 	 * 
 	 * @param player Player to sex
 	 * @param entity Entity to sex
@@ -108,7 +108,7 @@ public class TheSexMod implements ModInitializer {
 	}
 
 	/**
-	 * Adds to {@link #SEX_LIST} if {@link Sex#getConsent()} returns true
+	 * Adds to {@link #SEX_LIST} if {@link Sex#getConsent} returns true
 	 * 
 	 * @param entity Entity to sex
 	 * @param target Target entity to sex
