@@ -23,7 +23,7 @@ public interface Sex {
     public boolean isEnded();
 
     /**
-     * Spawns particles to indicate that the entity does not consent
+     * Spawns particles on an entity
      * 
      * @param <T>    Particle effect
      * 
@@ -47,6 +47,16 @@ public interface Sex {
      * @return True if run on next tick
      */
     public boolean tick();
+
+    /**
+     * Successful sex round
+     */
+    public void success();
+
+    /**
+     * Unsuccessful sex round
+     */
+    public void fail();
 
     /**
      * Ends the sex process

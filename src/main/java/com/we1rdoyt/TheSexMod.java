@@ -2,9 +2,10 @@ package com.we1rdoyt;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -72,13 +73,18 @@ public class TheSexMod implements ModInitializer {
 			for (Sex sex : SEX_LIST) {
 				if (!sex.isStarted())
 					sex.startSex();
-				if (sex.tick()) {
+				if (!sex.tick())
 					sex.endSex();
-				}
 			}
 
 			SEX_LIST.removeIf((sex) -> sex.isEnded());
 		});
+
+		ServerWorldEvents.UNLOAD.register((server, world) -> {
+			for (Sex sex : SEX_LIST)
+				sex.endSex();
+		});
+
 	}
 
 	/**
@@ -87,7 +93,7 @@ public class TheSexMod implements ModInitializer {
 	 * @param player Player to sex
 	 * @param target Target player to sex
 	 */
-	public static void addSexData(PlayerEntity player, PlayerEntity target) {
+	public static void addSexData(ServerPlayerEntity player, ServerPlayerEntity target) {
 		Sex playerToPlayerSex = new PlayerToPlayerSex(player, target);
 
 		if (playerToPlayerSex.getConsent())
@@ -98,10 +104,10 @@ public class TheSexMod implements ModInitializer {
 	 * Adds to {@link #SEX_LIST} if {@link Sex#getConsent} returns true
 	 * 
 	 * @param player Player to sex
-	 * @param entity Entity to sex
+	 * @param mob Mob to sex
 	 */
-	public static void addSexData(PlayerEntity player, LivingEntity entity) {
-		Sex playerToEntitySex = new PlayerToEntitySex(player, entity);
+	public static void addSexData(ServerPlayerEntity player, MobEntity mob) {
+		Sex playerToEntitySex = new PlayerToEntitySex(player, mob);
 
 		if (playerToEntitySex.getConsent())
 			SEX_LIST.add(playerToEntitySex);
@@ -110,11 +116,11 @@ public class TheSexMod implements ModInitializer {
 	/**
 	 * Adds to {@link #SEX_LIST} if {@link Sex#getConsent} returns true
 	 * 
-	 * @param entity Entity to sex
-	 * @param target Target entity to sex
+	 * @param mob Mob to sex
+	 * @param target Target mob to sex
 	 */
-	public static void addSexData(LivingEntity entity, LivingEntity target) {
-		Sex entityToEntitySex = new EntityToEntitySex(entity, target);
+	public static void addSexData(MobEntity mob, MobEntity target) {
+		Sex entityToEntitySex = new EntityToEntitySex(mob, target);
 
 		if (entityToEntitySex.getConsent())
 			SEX_LIST.add(entityToEntitySex);

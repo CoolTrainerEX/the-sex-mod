@@ -5,24 +5,32 @@ import com.we1rdoyt.entity.effect.STDStatusEffect;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class PlayerToPlayerSex implements Sex {
-    private final ServerPlayerEntity player, target;
+public class PlayerToMobSex implements Sex {
+    private final ServerPlayerEntity player;
+    private final MobEntity mob;
     private final boolean consent;
     private boolean started = false, ended = false;
     private int tick = 0, sexBar = 0, sexHealth = MAX_SEX_HEALTH;
 
-    public PlayerToPlayerSex(ServerPlayerEntity player, ServerPlayerEntity target) {
+    public PlayerToMobSex(ServerPlayerEntity player, MobEntity mob) {
         this.player = player;
-        this.target = target;
+        this.mob = mob;
 
-        if (!(consent = target.isSneaking()))
-            Sex.entityParticles(target, ParticleTypes.ANGRY_VILLAGER, target.getWorld());
+        double chance = 0.5;
+
+        if (mob.hasStatusEffect(ModStatusEffects.LIBIDO))
+            chance += (mob.getStatusEffect(ModStatusEffects.LIBIDO).getAmplifier() + 1) * 0.25;
+
+        if (!(consent = mob.getRandom().nextDouble() < chance))
+            Sex.entityParticles(mob, ParticleTypes.ANGRY_VILLAGER, (ServerWorld) mob.getWorld());
     }
 
     @Override
@@ -32,7 +40,7 @@ public class PlayerToPlayerSex implements Sex {
 
     @Override
     public LivingEntity getTarget() {
-        return target;
+        return mob;
     }
 
     @Override
@@ -52,13 +60,13 @@ public class PlayerToPlayerSex implements Sex {
 
     @Override
     public void startSex() {
-        player.startRiding(target);
+        player.startRiding(mob, true);
         started = true;
     }
 
     @Override
     public boolean tick() {
-        if (player.isRemoved() || target.isRemoved() || !target.hasPassenger(player) || sexBar >= MAX_SEX_BAR
+        if (player.isRemoved() || mob.isRemoved() || !mob.hasPassenger(player) || sexBar >= MAX_SEX_BAR
                 || sexHealth <= 0)
             return false;
 
@@ -78,19 +86,20 @@ public class PlayerToPlayerSex implements Sex {
     public void success() {
         int bonus = 0;
 
-        for (ServerPlayerEntity playerEntity : new ServerPlayerEntity[] { player, target })
-            if (playerEntity.hasStatusEffect(ModStatusEffects.LIBIDO))
-                bonus += (playerEntity.getStatusEffect(ModStatusEffects.LIBIDO).getAmplifier() + 1) * 5;
+        for (LivingEntity livingEntity : new LivingEntity[] { player, mob })
+            if (livingEntity.hasStatusEffect(ModStatusEffects.LIBIDO))
+                bonus += (livingEntity.getStatusEffect(ModStatusEffects.LIBIDO).getAmplifier() + 1) * 5;
 
         sexBar += (double) MAX_SEX_BAR_ADD * Math.min(tick + bonus, MAX_TICKS) / MAX_TICKS;
         tick = 0;
         Sex.entityParticles(player, ParticleTypes.HAPPY_VILLAGER, player.getWorld());
+        mob.playAmbientSound();
     }
 
     @Override
     public void fail() {
         sexHealth--;
-        target.damage(target.getWorld(), player.getDamageSources().mobAttack(player), 1);
+        mob.damage((ServerWorld) mob.getWorld(), player.getDamageSources().mobAttack(player), 1);
         Sex.entityParticles(player, ParticleTypes.ANGRY_VILLAGER, player.getWorld());
     }
 
@@ -107,13 +116,13 @@ public class PlayerToPlayerSex implements Sex {
             text.append(Text.translatable("sex.the-sex-mod.sex_health_icon")
                     .formatted(i < sexHealth ? Formatting.RED : Formatting.GRAY));
 
-        text.append(Text.translatable("sex.the-sex-mod.spacer"));
+        text.append("    ");
 
         for (int i = 0; i < length; i++)
             text.append(Text.translatable("sex.the-sex-mod.sex_bar_icon")
                     .formatted(i < (double) length * sexBar / MAX_SEX_BAR ? Formatting.BLUE : Formatting.GRAY));
 
-        text.append(Text.translatable("sex.the-sex-mod.spacer"));
+        text.append("    ");
 
         for (int i = 0; i < length; i++)
             text.append(Text.translatable("sex.the-sex-mod.ticks_icon")
@@ -124,22 +133,21 @@ public class PlayerToPlayerSex implements Sex {
 
     @Override
     public void endSex() {
-        ServerPlayerEntity[] entities = { player, target };
+        LivingEntity[] entities = { player, mob };
 
         ended = true;
         player.stopRiding();
+        player.sendMessage(Text.empty(), true);
 
         boolean playerHasSTD = player.hasStatusEffect(ModStatusEffects.STD);
-        boolean targetHasSTD = target.hasStatusEffect(ModStatusEffects.STD);
+        boolean entityHasSTD = mob.hasStatusEffect(ModStatusEffects.STD);
 
-        if ((playerHasSTD && targetHasSTD) || (!playerHasSTD && !targetHasSTD))
+        if ((playerHasSTD && entityHasSTD) || (!playerHasSTD && !entityHasSTD))
             return;
 
         for (int i = 0; i < entities.length; i++) {
-            entities[i].sendMessage(Text.empty(), true);
-
-            ServerPlayerEntity source = entities[i];
-            ServerPlayerEntity dest = entities[1 - i];
+            LivingEntity source = entities[i];
+            LivingEntity dest = entities[1 - i];
 
             if (source.hasStatusEffect(ModStatusEffects.STD) && !dest.hasStatusEffect(ModStatusEffects.STD)) {
                 StatusEffectInstance statusEffectInstance = source.getStatusEffect(ModStatusEffects.STD);
