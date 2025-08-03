@@ -2,17 +2,17 @@
   "layers": {
     "horse_body": [
       {
-        "texture": "minecraft:iron"
+        "texture": "the-sex-mod:condom"
       }
     ],
     "humanoid": [
       {
-        "texture": "minecraft:iron"
+        "texture": "the-sex-mod:condom"
       }
     ],
     "humanoid_leggings": [
       {
-        "texture": "minecraft:iron"
+        "texture": "the-sex-mod:condom"
       }
     ]
   }

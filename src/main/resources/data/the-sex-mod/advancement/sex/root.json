@@ -1,0 +1,17 @@
+{
+  "display": {
+    "icon": {
+      "id": "the-sex-mod:condom"
+    },
+    "title": {
+      "translate": "advancements.sex.root.title"
+    },
+    "description": {
+      "translate": "advancements.sex.root.description"
+    },
+    "background": "the-sex-mod:gui/advancements/backgrounds/sex",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {}
+}

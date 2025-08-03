@@ -5,6 +5,7 @@ import com.we1rdoyt.entity.effect.STDStatusEffect;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
@@ -14,7 +15,7 @@ import net.minecraft.util.Formatting;
 public class PlayerToPlayerSex implements Sex {
     private final ServerPlayerEntity player, target;
     private final boolean consent;
-    private boolean started = false, ended = false;
+    private boolean started = false, ended = false, checkInput[] = { false, false }, checkOtherPlayerInput = false;
     private int tick = 0, sexBar = 0, sexHealth = MAX_SEX_HEALTH;
 
     public PlayerToPlayerSex(ServerPlayerEntity player, ServerPlayerEntity target) {
@@ -64,12 +65,23 @@ public class PlayerToPlayerSex implements Sex {
 
         tick = (tick + 1) % MAX_TICKS;
 
-        player.sendMessage(hudDisplay(), true);
+        PlayerEntity[] players = new PlayerEntity[] { player, target };
+
+        for (PlayerEntity playerEntity : players)
+            playerEntity.sendMessage(hudDisplay(), true);
 
         if (tick == 0)
             fail();
-        else if (player.isJumping())
-            success();
+        else
+            for (int i = 0; i < players.length; i++) {
+                if (players[i].isBlocking()) {
+                    if (!checkInput[i]) {
+                        success();
+                        checkInput[i] = true;
+                    }
+                } else
+                    checkInput[i] = false;
+            }
 
         return true;
     }
@@ -82,8 +94,13 @@ public class PlayerToPlayerSex implements Sex {
             if (playerEntity.hasStatusEffect(ModStatusEffects.LIBIDO))
                 bonus += (playerEntity.getStatusEffect(ModStatusEffects.LIBIDO).getAmplifier() + 1) * 5;
 
+        if (checkOtherPlayerInput) {
+            tick = 0;
+            checkOtherPlayerInput = false;
+        } else
+            checkOtherPlayerInput = true;
+
         sexBar += (double) MAX_SEX_BAR_ADD * Math.min(tick + bonus, MAX_TICKS) / MAX_TICKS;
-        tick = 0;
         Sex.entityParticles(player, ParticleTypes.HAPPY_VILLAGER, player.getWorld());
     }
 
@@ -124,10 +141,11 @@ public class PlayerToPlayerSex implements Sex {
 
     @Override
     public void endSex() {
-        ServerPlayerEntity[] entities = { player, target };
+        ServerPlayerEntity[] players = { player, target };
 
         ended = true;
         player.stopRiding();
+        breed();
 
         boolean playerHasSTD = player.hasStatusEffect(ModStatusEffects.STD);
         boolean targetHasSTD = target.hasStatusEffect(ModStatusEffects.STD);
@@ -135,19 +153,26 @@ public class PlayerToPlayerSex implements Sex {
         if ((playerHasSTD && targetHasSTD) || (!playerHasSTD && !targetHasSTD))
             return;
 
-        for (int i = 0; i < entities.length; i++) {
-            entities[i].sendMessage(Text.empty(), true);
+        for (int i = 0; i < players.length; i++) {
+            players[i].sendMessage(Text.empty(), true);
 
-            ServerPlayerEntity source = entities[i];
-            ServerPlayerEntity dest = entities[1 - i];
+            ServerPlayerEntity source = players[i];
+            ServerPlayerEntity dest = players[1 - i];
 
             if (source.hasStatusEffect(ModStatusEffects.STD) && !dest.hasStatusEffect(ModStatusEffects.STD)) {
                 StatusEffectInstance statusEffectInstance = source.getStatusEffect(ModStatusEffects.STD);
 
                 if (dest.getRandom().nextDouble() < ((STDStatusEffect) statusEffectInstance.getEffectType().value())
-                        .getInfectChance() + (statusEffectInstance.getAmplifier() + 1) * 0.25)
+                        .getInfectChance() + (statusEffectInstance.getAmplifier() + 1) * 0.25 - Sex.stdResistance(dest))
                     dest.addStatusEffect(new StatusEffectInstance(statusEffectInstance));
             }
         }
+    }
+
+    @Override
+    public void breed() {
+        if (sexBar >= MAX_SEX_BAR
+                && player.getRandom().nextDouble() >= Sex.stdResistance(player) + Sex.stdResistance(target))
+            return;
     }
 }

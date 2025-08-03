@@ -22,7 +22,7 @@ public class ModItemGroups {
     public static void initialize() {
         Registry.register(Registries.ITEM_GROUP, SEX_ITEMS,
                 FabricItemGroup.builder().displayName(Text.translatable("itemGroup.the-sex-mod"))
-                        .icon(() -> new ItemStack(ModItems.OPIUM)).entries((itemContext, entries) -> {
+                        .icon(() -> new ItemStack(ModItems.CONDOM)).entries((itemContext, entries) -> {
                             entries.add(ModItems.CONSENT);
                             entries.add(ModItems.RUBBER);
                             entries.add(ModItems.CONDOM);

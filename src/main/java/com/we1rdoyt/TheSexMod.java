@@ -104,10 +104,10 @@ public class TheSexMod implements ModInitializer {
 	 * Adds to {@link #SEX_LIST} if {@link Sex#getConsent} returns true
 	 * 
 	 * @param player Player to sex
-	 * @param mob Mob to sex
+	 * @param mob    Mob to sex
 	 */
 	public static void addSexData(ServerPlayerEntity player, MobEntity mob) {
-		Sex playerToEntitySex = new PlayerToEntitySex(player, mob);
+		Sex playerToEntitySex = new PlayerToMobSex(player, mob);
 
 		if (playerToEntitySex.getConsent())
 			SEX_LIST.add(playerToEntitySex);
@@ -116,11 +116,11 @@ public class TheSexMod implements ModInitializer {
 	/**
 	 * Adds to {@link #SEX_LIST} if {@link Sex#getConsent} returns true
 	 * 
-	 * @param mob Mob to sex
+	 * @param mob    Mob to sex
 	 * @param target Target mob to sex
 	 */
 	public static void addSexData(MobEntity mob, MobEntity target) {
-		Sex entityToEntitySex = new EntityToEntitySex(mob, target);
+		Sex entityToEntitySex = new MobToMobSex(mob, target);
 
 		if (entityToEntitySex.getConsent())
 			SEX_LIST.add(entityToEntitySex);

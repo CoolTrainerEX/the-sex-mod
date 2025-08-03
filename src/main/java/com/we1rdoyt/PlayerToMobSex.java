@@ -3,21 +3,28 @@ package com.we1rdoyt;
 import com.we1rdoyt.entity.effect.ModStatusEffects;
 import com.we1rdoyt.entity.effect.STDStatusEffect;
 
+import net.minecraft.entity.EntityStatuses;
+import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.GameRules;
 
 public class PlayerToMobSex implements Sex {
     private final ServerPlayerEntity player;
     private final MobEntity mob;
     private final boolean consent;
-    private boolean started = false, ended = false;
+    private boolean started = false, ended = false, checkInput = false;
     private int tick = 0, sexBar = 0, sexHealth = MAX_SEX_HEALTH;
 
     public PlayerToMobSex(ServerPlayerEntity player, MobEntity mob) {
@@ -76,8 +83,11 @@ public class PlayerToMobSex implements Sex {
 
         if (tick == 0)
             fail();
-        else if (player.isJumping())
-            success();
+        else if (player.isBlocking()) {
+            if (!checkInput)
+                success();
+        } else
+            checkInput = false;
 
         return true;
     }
@@ -92,6 +102,7 @@ public class PlayerToMobSex implements Sex {
 
         sexBar += (double) MAX_SEX_BAR_ADD * Math.min(tick + bonus, MAX_TICKS) / MAX_TICKS;
         tick = 0;
+        checkInput = true;
         Sex.entityParticles(player, ParticleTypes.HAPPY_VILLAGER, player.getWorld());
         mob.playAmbientSound();
     }
@@ -138,6 +149,7 @@ public class PlayerToMobSex implements Sex {
         ended = true;
         player.stopRiding();
         player.sendMessage(Text.empty(), true);
+        breed();
 
         boolean playerHasSTD = player.hasStatusEffect(ModStatusEffects.STD);
         boolean entityHasSTD = mob.hasStatusEffect(ModStatusEffects.STD);
@@ -153,8 +165,49 @@ public class PlayerToMobSex implements Sex {
                 StatusEffectInstance statusEffectInstance = source.getStatusEffect(ModStatusEffects.STD);
 
                 if (dest.getRandom().nextDouble() < ((STDStatusEffect) statusEffectInstance.getEffectType().value())
-                        .getInfectChance() + (statusEffectInstance.getAmplifier() + 1) * 0.25)
+                        .getInfectChance() + (statusEffectInstance.getAmplifier() + 1) * 0.25 - Sex.stdResistance(dest))
                     dest.addStatusEffect(new StatusEffectInstance(statusEffectInstance));
+            }
+        }
+    }
+
+    @Override
+    public void breed() {
+        Random random = player.getRandom();
+
+        if (sexBar >= MAX_SEX_BAR && random.nextDouble() >= Sex.stdResistance(player) + Sex.stdResistance(mob)
+                && mob.getWorld() instanceof ServerWorld world) {
+            MobEntity child;
+
+            if (mob instanceof AnimalEntity animal)
+                animal.breed(world, animal);
+            else if (mob instanceof PassiveEntity passiveEntity
+                    && (child = passiveEntity.createChild(world, passiveEntity)) != null) {
+                child.setBaby(true);
+                child.refreshPositionAndAngles(mob.getX(), mob.getY(), mob.getZ(), 0, 0);
+                passiveEntity.setBreedingAge(6000);
+                world.sendEntityStatus(mob, EntityStatuses.ADD_BREEDING_PARTICLES);
+
+                if (world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT))
+                    world.spawnEntity(new ExperienceOrbEntity(world, mob.getX(), mob.getY(), mob.getZ(),
+                            random.nextInt(7) + 1));
+
+                world.spawnEntityAndPassengers(child);
+            } else {
+                child = (MobEntity) mob.getType().create(world, SpawnReason.BREEDING);
+                child.setBaby(true);
+                child.refreshPositionAndAngles(mob.getX(), mob.getY(), mob.getZ(), 0, 0);
+
+                if (mob instanceof PassiveEntity passiveEntity)
+                    passiveEntity.setBreedingAge(6000);
+
+                world.sendEntityStatus(mob, EntityStatuses.ADD_BREEDING_PARTICLES);
+
+                if (world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT))
+                    world.spawnEntity(new ExperienceOrbEntity(world, mob.getX(), mob.getY(), mob.getZ(),
+                            random.nextInt(7) + 1));
+
+                world.spawnEntityAndPassengers(child);
             }
         }
     }
