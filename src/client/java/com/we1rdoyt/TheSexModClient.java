@@ -19,10 +19,10 @@ public class TheSexModClient implements ClientModInitializer {
 		// rendering.
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			boolean newJump = client.player != null && client.player.hasVehicle() && client.options.jumpKey.isPressed();
+			boolean newJump = client.player != null && client.options.jumpKey.isPressed();
 
-			if (!jump && client.player != null && client.player.hasVehicle() && client.options.jumpKey.isPressed())
-				ClientPlayNetworking.send(new RidingPlayerJump());
+			if (!jump && newJump)
+				ClientPlayNetworking.send(client.player.hasVehicle() ? new RidingPlayerJump() : new PlayerJump());
 
 			jump = newJump;
 		});

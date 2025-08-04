@@ -46,22 +46,26 @@ public class TheSexMod implements ModInitializer {
 		ModItems.initialize();
 		ModItemGroups.initialize();
 		ModDataComponentTypes.initialize();
-
+		PayloadTypeRegistry.playC2S().register(PlayerJump.ID, PlayerJump.CODEC);
 		PayloadTypeRegistry.playC2S().register(RidingPlayerJump.ID, RidingPlayerJump.CODEC);
+
+		ServerPlayNetworking.registerGlobalReceiver(PlayerJump.ID, (payload, context) -> {
+			context.server().execute(() -> {
+				if (SEX_LIST.stream()
+						.filter(sex -> sex.getEntity() == context.player() || sex.getTarget() == context.player())
+						.findAny().get() instanceof PlayerToPlayerSex sex)
+					if (sex.getEntity() == context.player())
+						sex.setEntityInput();
+					else
+						sex.setTargetInput();
+			});
+		});
 
 		ServerPlayNetworking.registerGlobalReceiver(RidingPlayerJump.ID, (payload, context) -> {
 			context.server().execute(() -> {
-				SEX_LIST.stream()
-						.filter(sex -> sex.getEntity() == context.player() || sex.getTarget() == context.player())
-						.forEach(sex -> {
-							if (sex instanceof PlayerToMobSex playerToMobSex)
-								playerToMobSex.setInput();
-							else if (sex instanceof PlayerToPlayerSex playerToPlayerSex)
-								if (playerToPlayerSex.getEntity() == context.player())
-									playerToPlayerSex.setEntityInput();
-								else
-									playerToPlayerSex.setTargetInput();
-						});
+				if (SEX_LIST.stream().filter(sex -> sex.getEntity() == context.player()).findAny()
+						.get() instanceof PlayerToMobSex sex)
+					sex.setInput();
 			});
 		});
 

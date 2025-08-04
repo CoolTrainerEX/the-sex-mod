@@ -14,5 +14,4 @@ public record RidingPlayerJump() implements CustomPayload {
     public Id<? extends CustomPayload> getId() {
         return ID;
     }
-
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.we1rdoyt.entity.effect.ModStatusEffects;
 import com.we1rdoyt.entity.effect.STDStatusEffect;
 
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -63,6 +64,7 @@ public class PlayerToPlayerSex implements Sex {
      */
     public void setEntityInput() {
         inputs.put(player, true);
+        player.sendMessage(Text.of("a"));
     }
 
     /**
@@ -70,21 +72,24 @@ public class PlayerToPlayerSex implements Sex {
      */
     public void setTargetInput() {
         inputs.put(target, true);
+
     }
 
     @Override
     public void startSex() {
-        player.startRiding(target);
         started = true;
     }
 
     @Override
     public boolean tick() {
-        if (player.isRemoved() || target.isRemoved() || !target.hasPassenger(player) || sexBar >= MAX_SEX_BAR
-                || sexHealth <= 0)
+        if (player.isRemoved() || target.isRemoved() || sexBar >= MAX_SEX_BAR || sexHealth <= 0)
             return false;
 
         tick = (tick + 1) % MAX_TICKS;
+
+        target.copyPositionAndRotation(player);
+        player.setPose(EntityPose.SWIMMING);
+        target.setPose(EntityPose.SLEEPING);
 
         PlayerEntity[] players = new PlayerEntity[] { player, target };
 
@@ -123,6 +128,7 @@ public class PlayerToPlayerSex implements Sex {
     @Override
     public void fail() {
         sexHealth--;
+        checkOtherPlayerInput = false;
         target.damage(target.getWorld(), player.getDamageSources().mobAttack(player), 1);
         Sex.entityParticles(player, ParticleTypes.ANGRY_VILLAGER, player.getWorld());
     }
@@ -161,6 +167,10 @@ public class PlayerToPlayerSex implements Sex {
 
         ended = true;
         player.stopRiding();
+
+        for (ServerPlayerEntity serverPlayer : players)
+            serverPlayer.sendMessage(Text.empty(), true);
+
         breed();
 
         boolean playerHasSTD = player.hasStatusEffect(ModStatusEffects.STD);
@@ -170,8 +180,6 @@ public class PlayerToPlayerSex implements Sex {
             return;
 
         for (int i = 0; i < players.length; i++) {
-            players[i].sendMessage(Text.empty(), true);
-
             ServerPlayerEntity source = players[i];
             ServerPlayerEntity dest = players[1 - i];
 
