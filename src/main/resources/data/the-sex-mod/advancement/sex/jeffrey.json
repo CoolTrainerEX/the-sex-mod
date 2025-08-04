@@ -1,0 +1,32 @@
+{
+  "parent": "the-sex-mod:sex/child_sex",
+  "criteria": {
+    "multiple_child_sex": {
+      "conditions": {
+        "is_child": true
+      },
+      "trigger": "the-sex-mod:sex"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.sex.jeffrey.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:wither_skeleton_skull"
+    },
+    "title": {
+      "translate": "advancements.sex.jeffrey.title"
+    }
+  },
+  "requirements": [
+    [
+      "multiple_child_sex"
+    ]
+  ],
+  "rewards": {
+    "experience": 25
+  }
+}

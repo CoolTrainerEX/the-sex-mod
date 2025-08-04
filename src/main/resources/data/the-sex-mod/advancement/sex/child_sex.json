@@ -1,0 +1,28 @@
+{
+  "parent": "the-sex-mod:sex/sex",
+  "criteria": {
+    "child_sex": {
+      "conditions": {
+        "is_child": true
+      },
+      "trigger": "the-sex-mod:sex"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.sex.child_sex.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:skeleton_skull"
+    },
+    "title": {
+      "translate": "advancements.sex.child_sex.title"
+    }
+  },
+  "requirements": [
+    [
+      "child_sex"
+    ]
+  ]
+}

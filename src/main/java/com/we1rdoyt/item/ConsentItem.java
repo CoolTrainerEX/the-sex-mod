@@ -41,7 +41,7 @@ public class ConsentItem extends Item {
             return ActionResult.SUCCESS.withNewHandStack(stack);
         } else if (stack.contains(ModDataComponentTypes.TARGET_ENTITY)
                 && !(uuid = stack.get(ModDataComponentTypes.TARGET_ENTITY)).equals(entity.getUuid()))
-            TheSexMod.addSexData((MobEntity) world.getEntity(uuid), (MobEntity) entity);
+            TheSexMod.addSexData((ServerPlayerEntity) user, (MobEntity) world.getEntity(uuid), (MobEntity) entity);
         else
             TheSexMod.addSexData((ServerPlayerEntity) user, (MobEntity) entity);
 

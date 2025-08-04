@@ -14,11 +14,13 @@ import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.we1rdoyt.advancement.criterion.ModCriteria;
 import com.we1rdoyt.component.ModDataComponentTypes;
 import com.we1rdoyt.item.ModItemGroups;
 import com.we1rdoyt.item.ModItems;
@@ -42,18 +44,21 @@ public class TheSexMod implements ModInitializer {
 
 		LOGGER.info("Hello Fabric world!");
 
-		ModPotions.initialize();
-		ModItems.initialize();
-		ModItemGroups.initialize();
-		ModDataComponentTypes.initialize();
+		ModPotions.init();
+		ModItems.init();
+		ModItemGroups.init();
+		ModDataComponentTypes.init();
+		ModCriteria.init();
 		PayloadTypeRegistry.playC2S().register(PlayerJump.ID, PlayerJump.CODEC);
 		PayloadTypeRegistry.playC2S().register(RidingPlayerJump.ID, RidingPlayerJump.CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(PlayerJump.ID, (payload, context) -> {
 			context.server().execute(() -> {
-				if (SEX_LIST.stream()
+				Optional<Sex> sexOptional = SEX_LIST.stream()
 						.filter(sex -> sex.getEntity() == context.player() || sex.getTarget() == context.player())
-						.findAny().get() instanceof PlayerToPlayerSex sex)
+						.findAny();
+
+				if (sexOptional.isPresent() && sexOptional.get() instanceof PlayerToPlayerSex sex)
 					if (sex.getEntity() == context.player())
 						sex.setEntityInput();
 					else
@@ -63,8 +68,10 @@ public class TheSexMod implements ModInitializer {
 
 		ServerPlayNetworking.registerGlobalReceiver(RidingPlayerJump.ID, (payload, context) -> {
 			context.server().execute(() -> {
-				if (SEX_LIST.stream().filter(sex -> sex.getEntity() == context.player()).findAny()
-						.get() instanceof PlayerToMobSex sex)
+				Optional<Sex> sexOptional = SEX_LIST.stream().filter(sex -> sex.getEntity() == context.player())
+						.findAny();
+
+				if (sexOptional.isPresent() && sexOptional.get() instanceof PlayerToMobSex sex)
 					sex.setInput();
 			});
 		});
@@ -138,11 +145,12 @@ public class TheSexMod implements ModInitializer {
 	/**
 	 * Adds to {@link #SEX_LIST} if {@link Sex#getConsent} returns true
 	 * 
+	 * @param player Player who initialized sex
 	 * @param mob    Mob to sex
 	 * @param target Target mob to sex
 	 */
-	public static void addSexData(MobEntity mob, MobEntity target) {
-		Sex entityToEntitySex = new MobToMobSex(mob, target);
+	public static void addSexData(ServerPlayerEntity player, MobEntity mob, MobEntity target) {
+		Sex entityToEntitySex = new MobToMobSex(player, mob, target);
 
 		if (entityToEntitySex.getConsent())
 			SEX_LIST.add(entityToEntitySex);

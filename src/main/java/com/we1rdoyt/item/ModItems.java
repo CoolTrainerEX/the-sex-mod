@@ -27,7 +27,7 @@ public class ModItems extends Items {
                                         new Item.Settings().horseArmor(ModArmorMaterials.CONDOM)),
                         OPIUM = register("opium");
 
-        public static void initialize() {
+        public static void init() {
         }
 
         private static RegistryKey<Item> keyOf(String id) {

@@ -14,7 +14,7 @@ import net.minecraft.util.Uuids;
 public class ModDataComponentTypes {
     public static final ComponentType<UUID> TARGET_ENTITY = register("target_entity", builer -> builer.codec(Uuids.CODEC));
 
-    public static void initialize() {
+    public static void init() {
     }
 
     private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {

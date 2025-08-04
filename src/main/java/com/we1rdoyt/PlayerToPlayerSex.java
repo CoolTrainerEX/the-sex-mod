@@ -3,6 +3,7 @@ package com.we1rdoyt;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.we1rdoyt.advancement.criterion.ModCriteria;
 import com.we1rdoyt.entity.effect.ModStatusEffects;
 import com.we1rdoyt.entity.effect.STDStatusEffect;
 
@@ -32,6 +33,8 @@ public class PlayerToPlayerSex implements Sex {
 
         if (!(consent = target.isSneaking()))
             Sex.entityParticles(target, ParticleTypes.ANGRY_VILLAGER, target.getWorld());
+
+        ModCriteria.SEX.trigger(player, player, target, consent);
     }
 
     @Override
@@ -172,6 +175,7 @@ public class PlayerToPlayerSex implements Sex {
             serverPlayer.sendMessage(Text.empty(), true);
 
         breed();
+        ModCriteria.SEX_COMPLETE.trigger(player, sexBar >= MAX_SEX_BAR);
 
         boolean playerHasSTD = player.hasStatusEffect(ModStatusEffects.STD);
         boolean targetHasSTD = target.hasStatusEffect(ModStatusEffects.STD);

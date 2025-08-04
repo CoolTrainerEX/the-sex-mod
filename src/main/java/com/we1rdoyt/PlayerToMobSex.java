@@ -1,5 +1,6 @@
 package com.we1rdoyt;
 
+import com.we1rdoyt.advancement.criterion.ModCriteria;
 import com.we1rdoyt.entity.effect.ModStatusEffects;
 import com.we1rdoyt.entity.effect.STDStatusEffect;
 
@@ -38,6 +39,8 @@ public class PlayerToMobSex implements Sex {
 
         if (!(consent = mob.getRandom().nextDouble() < chance))
             Sex.entityParticles(mob, ParticleTypes.ANGRY_VILLAGER, (ServerWorld) mob.getWorld());
+
+        ModCriteria.SEX.trigger(player, player, mob, consent);
     }
 
     @Override
@@ -155,6 +158,7 @@ public class PlayerToMobSex implements Sex {
         player.stopRiding();
         player.sendMessage(Text.empty(), true);
         breed();
+        ModCriteria.SEX_COMPLETE.trigger(player, sexBar >= MAX_SEX_BAR);
 
         boolean playerHasSTD = player.hasStatusEffect(ModStatusEffects.STD);
         boolean entityHasSTD = mob.hasStatusEffect(ModStatusEffects.STD);

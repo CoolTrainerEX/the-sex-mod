@@ -1,5 +1,6 @@
 package com.we1rdoyt;
 
+import com.we1rdoyt.advancement.criterion.ModCriteria;
 import com.we1rdoyt.entity.effect.ModStatusEffects;
 import com.we1rdoyt.entity.effect.STDStatusEffect;
 
@@ -12,19 +13,22 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 
 public class MobToMobSex implements Sex {
     private final MobEntity mob, target;
+    private final ServerPlayerEntity player;
     private final boolean consent;
     private boolean started = false, ended = false;
     private int tick = 0, sexBar = 0, sexHealth = MAX_SEX_HEALTH;
 
-    public MobToMobSex(MobEntity mob, MobEntity target) {
+    public MobToMobSex(ServerPlayerEntity player, MobEntity mob, MobEntity target) {
         this.mob = mob;
         this.target = target;
+        this.player = player;
 
         for (MobEntity mobEntity : new MobEntity[] { mob, target }) {
             double chance = 0.5;
@@ -40,6 +44,8 @@ public class MobToMobSex implements Sex {
         }
 
         consent = true;
+
+        ModCriteria.SEX.trigger(player, mob, target, consent);
     }
 
     @Override
@@ -117,6 +123,7 @@ public class MobToMobSex implements Sex {
         ended = true;
         mob.stopRiding();
         breed();
+        ModCriteria.SEX_COMPLETE.trigger(player, sexBar >= MAX_SEX_BAR);
 
         boolean entityHasSTD = mob.hasStatusEffect(ModStatusEffects.STD);
         boolean targetHasSTD = target.hasStatusEffect(ModStatusEffects.STD);

@@ -19,7 +19,7 @@ import net.minecraft.util.Identifier;
 public class ModItemGroups {
     public static final RegistryKey<ItemGroup> SEX_ITEMS = register("sex_items");
 
-    public static void initialize() {
+    public static void init() {
         Registry.register(Registries.ITEM_GROUP, SEX_ITEMS,
                 FabricItemGroup.builder().displayName(Text.translatable("itemGroup.the-sex-mod"))
                         .icon(() -> new ItemStack(ModItems.CONDOM)).entries((itemContext, entries) -> {

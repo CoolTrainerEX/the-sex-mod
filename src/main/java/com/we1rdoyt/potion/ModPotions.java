@@ -20,7 +20,7 @@ public class ModPotions {
             STRONG_SEX = register("strong_sex",
                     new Potion("sex", new StatusEffectInstance(ModStatusEffects.LIBIDO, 1800, 1)));
 
-    public static void initialize() {
+    public static void init() {
         FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
             builder.registerPotionRecipe(Potions.AWKWARD, ModItems.OPIUM, SEX);
             builder.registerPotionRecipe(ModPotions.SEX, Items.REDSTONE, LONG_SEX);
