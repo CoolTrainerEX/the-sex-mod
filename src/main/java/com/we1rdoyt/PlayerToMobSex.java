@@ -24,7 +24,7 @@ public class PlayerToMobSex implements Sex {
     private final ServerPlayerEntity player;
     private final MobEntity mob;
     private final boolean consent;
-    private boolean started = false, ended = false, checkInput = false;
+    private boolean started = false, ended = false, input = false;
     private int tick = 0, sexBar = 0, sexHealth = MAX_SEX_HEALTH;
 
     public PlayerToMobSex(ServerPlayerEntity player, MobEntity mob) {
@@ -65,6 +65,13 @@ public class PlayerToMobSex implements Sex {
         return ended;
     }
 
+    /**
+     * Sets the input to true
+     */
+    public void setInput() {
+        input = true;
+    }
+
     @Override
     public void startSex() {
         player.startRiding(mob, true);
@@ -83,11 +90,10 @@ public class PlayerToMobSex implements Sex {
 
         if (tick == 0)
             fail();
-        else if (player.isBlocking()) {
-            if (!checkInput)
-                success();
-        } else
-            checkInput = false;
+        else if (input)
+            success();
+
+        input = false;
 
         return true;
     }
@@ -102,7 +108,6 @@ public class PlayerToMobSex implements Sex {
 
         sexBar += (double) MAX_SEX_BAR_ADD * Math.min(tick + bonus, MAX_TICKS) / MAX_TICKS;
         tick = 0;
-        checkInput = true;
         Sex.entityParticles(player, ParticleTypes.HAPPY_VILLAGER, player.getWorld());
         mob.playAmbientSound();
     }

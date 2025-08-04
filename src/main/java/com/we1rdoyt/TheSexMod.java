@@ -1,8 +1,10 @@
 package com.we1rdoyt;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
@@ -45,14 +47,31 @@ public class TheSexMod implements ModInitializer {
 		ModItemGroups.initialize();
 		ModDataComponentTypes.initialize();
 
+		PayloadTypeRegistry.playC2S().register(RidingPlayerJump.ID, RidingPlayerJump.CODEC);
+
+		ServerPlayNetworking.registerGlobalReceiver(RidingPlayerJump.ID, (payload, context) -> {
+			context.server().execute(() -> {
+				SEX_LIST.stream()
+						.filter(sex -> sex.getEntity() == context.player() || sex.getTarget() == context.player())
+						.forEach(sex -> {
+							if (sex instanceof PlayerToMobSex playerToMobSex)
+								playerToMobSex.setInput();
+							else if (sex instanceof PlayerToPlayerSex playerToPlayerSex)
+								if (playerToPlayerSex.getEntity() == context.player())
+									playerToPlayerSex.setEntityInput();
+								else
+									playerToPlayerSex.setTargetInput();
+						});
+			});
+		});
+
 		ServerTickEvents.START_SERVER_TICK.register(client -> {
 			Predicate<ItemStack> isFilledConsent = itemStack -> itemStack.isOf(ModItems.CONSENT)
 					&& itemStack.contains(ModDataComponentTypes.TARGET_ENTITY);
 
 			for (ServerPlayerEntity player : client.getPlayerManager().getPlayerList())
 				if (player.getInventory().contains(isFilledConsent))
-					for (ItemStack itemStack : player.getInventory().getMainStacks().stream().filter(isFilledConsent)
-							.toList()) {
+					player.getInventory().getMainStacks().stream().filter(isFilledConsent).forEach(itemStack -> {
 						Entity entity = player.getWorld().getEntity(itemStack.get(ModDataComponentTypes.TARGET_ENTITY));
 
 						if (entity == null || player.getEyePos().squaredDistanceTo(entity.getPos()) > player
@@ -66,10 +85,10 @@ public class TheSexMod implements ModInitializer {
 											entity.getName()),
 									true);
 						}
-					}
+					});
 		});
 
-		ServerTickEvents.START_WORLD_TICK.register((world) -> {
+		ServerTickEvents.START_WORLD_TICK.register(world -> {
 			for (Sex sex : SEX_LIST) {
 				if (!sex.isStarted())
 					sex.startSex();
@@ -80,11 +99,10 @@ public class TheSexMod implements ModInitializer {
 			SEX_LIST.removeIf((sex) -> sex.isEnded());
 		});
 
-		ServerWorldEvents.UNLOAD.register((server, world) -> {
+		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
 			for (Sex sex : SEX_LIST)
 				sex.endSex();
 		});
-
 	}
 
 	/**

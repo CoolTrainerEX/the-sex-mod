@@ -1,0 +1,28 @@
+{
+  "parent": "the-sex-mod:sex/root",
+  "criteria": {
+    "sex_potion": {
+      "conditions": {
+        "potion": "the-sex-mod:sex"
+      },
+      "trigger": "minecraft:brewed_potion"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.sex.sex_potion.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "the-sex-mod:opium"
+    },
+    "title": {
+      "translate": "advancements.sex.sex_potion.title"
+    }
+  },
+  "requirements": [
+    [
+      "sex_potion"
+    ]
+  ]
+}

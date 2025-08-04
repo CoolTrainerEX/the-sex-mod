@@ -1,5 +1,8 @@
 package com.we1rdoyt;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.we1rdoyt.entity.effect.ModStatusEffects;
 import com.we1rdoyt.entity.effect.STDStatusEffect;
 
@@ -15,12 +18,16 @@ import net.minecraft.util.Formatting;
 public class PlayerToPlayerSex implements Sex {
     private final ServerPlayerEntity player, target;
     private final boolean consent;
-    private boolean started = false, ended = false, checkInput[] = { false, false }, checkOtherPlayerInput = false;
+    private boolean started = false, ended = false, checkOtherPlayerInput = false;
     private int tick = 0, sexBar = 0, sexHealth = MAX_SEX_HEALTH;
+    private final Map<ServerPlayerEntity, Boolean> inputs = new HashMap<>();
 
     public PlayerToPlayerSex(ServerPlayerEntity player, ServerPlayerEntity target) {
         this.player = player;
         this.target = target;
+
+        inputs.put(player, false);
+        inputs.put(target, false);
 
         if (!(consent = target.isSneaking()))
             Sex.entityParticles(target, ParticleTypes.ANGRY_VILLAGER, target.getWorld());
@@ -51,6 +58,20 @@ public class PlayerToPlayerSex implements Sex {
         return ended;
     }
 
+    /**
+     * Sets the entity input to true
+     */
+    public void setEntityInput() {
+        inputs.put(player, true);
+    }
+
+    /**
+     * Sets the target input to true
+     */
+    public void setTargetInput() {
+        inputs.put(target, true);
+    }
+
     @Override
     public void startSex() {
         player.startRiding(target);
@@ -73,15 +94,11 @@ public class PlayerToPlayerSex implements Sex {
         if (tick == 0)
             fail();
         else
-            for (int i = 0; i < players.length; i++) {
-                if (players[i].isBlocking()) {
-                    if (!checkInput[i]) {
-                        success();
-                        checkInput[i] = true;
-                    }
-                } else
-                    checkInput[i] = false;
-            }
+            for (boolean input : inputs.values())
+                if (input)
+                    success();
+
+        inputs.replaceAll((key, value) -> false);
 
         return true;
     }
@@ -94,11 +111,10 @@ public class PlayerToPlayerSex implements Sex {
             if (playerEntity.hasStatusEffect(ModStatusEffects.LIBIDO))
                 bonus += (playerEntity.getStatusEffect(ModStatusEffects.LIBIDO).getAmplifier() + 1) * 5;
 
-        if (checkOtherPlayerInput) {
+        if (checkOtherPlayerInput)
             tick = 0;
-            checkOtherPlayerInput = false;
-        } else
-            checkOtherPlayerInput = true;
+
+        checkOtherPlayerInput = !checkOtherPlayerInput;
 
         sexBar += (double) MAX_SEX_BAR_ADD * Math.min(tick + bonus, MAX_TICKS) / MAX_TICKS;
         Sex.entityParticles(player, ParticleTypes.HAPPY_VILLAGER, player.getWorld());
