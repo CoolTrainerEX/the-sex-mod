@@ -4,45 +4,49 @@ import java.util.function.Function;
 
 import com.we1rdoyt.TheSexMod;
 import com.we1rdoyt.item.equipment.ModArmorMaterials;
+
+import net.minecraft.component.type.FoodComponents;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 
 public class ModItems extends Items {
-        public static final Item CONSENT = register("consent", ConsentItem::new,
-                        new Item.Settings().maxCount(16).useCooldown(1)), RUBBER = register("rubber"),
-                        CONDOM = register("condom"),
-                        CONDOM_HELMET = register("condom_helmet",
-                                        new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.HELMET)),
-                        CONDOM_CHESTPLATE = register("condom_chestplate",
-                                        new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.CHESTPLATE)),
-                        CONDOM_LEGGINGS = register("condom_leggings",
-                                        new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.LEGGINGS)),
-                        CONDOM_BOOTS = register("condom_boots",
-                                        new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.BOOTS)),
-                        CONDOM_HORSE_ARMOR = register("condom_horse_armor",
-                                        new Item.Settings().horseArmor(ModArmorMaterials.CONDOM)),
-                        OPIUM = register("opium");
+    public static final Item CONSENT = register("consent", ConsentItem::new,
+            new Item.Settings().rarity(Rarity.UNCOMMON).maxCount(16).useCooldown(1)), RUBBER = register("rubber"),
+            CONDOM = register("condom"),
+            CONDOM_HELMET = register("condom_helmet",
+                    new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.HELMET)),
+            CONDOM_CHESTPLATE = register("condom_chestplate",
+                    new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.CHESTPLATE)),
+            CONDOM_LEGGINGS = register("condom_leggings",
+                    new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.LEGGINGS)),
+            CONDOM_BOOTS = register("condom_boots",
+                    new Item.Settings().armor(ModArmorMaterials.CONDOM, EquipmentType.BOOTS)),
+            CONDOM_HORSE_ARMOR = register("condom_horse_armor",
+                    new Item.Settings().horseArmor(ModArmorMaterials.CONDOM)),
+            OPIUM = register("opium"), CHILD = register("child", new Item.Settings().food(FoodComponents.BEEF)),
+            COOKED_CHILD = register("cooked_child", new Item.Settings().food(FoodComponents.COOKED_BEEF));
 
-        public static void init() {
-        }
+    public static void init() {
+    }
 
-        private static RegistryKey<Item> keyOf(String id) {
-                return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(TheSexMod.MOD_ID, id));
-        }
+    private static RegistryKey<Item> keyOf(String id) {
+        return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(TheSexMod.MOD_ID, id));
+    }
 
-        public static Item register(String id, Function<Item.Settings, Item> factory, Item.Settings settings) {
-                return register(keyOf(id), factory, settings);
-        }
+    public static Item register(String id, Function<Item.Settings, Item> factory, Item.Settings settings) {
+        return register(keyOf(id), factory, settings);
+    }
 
-        public static Item register(String id, Item.Settings settings) {
-                return register(keyOf(id), Item::new, settings);
-        }
+    public static Item register(String id, Item.Settings settings) {
+        return register(keyOf(id), Item::new, settings);
+    }
 
-        public static Item register(String id) {
-                return register(keyOf(id), Item::new, new Item.Settings());
-        }
+    public static Item register(String id) {
+        return register(keyOf(id), Item::new, new Item.Settings());
+    }
 }

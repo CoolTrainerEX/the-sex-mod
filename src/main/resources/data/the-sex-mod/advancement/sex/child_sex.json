@@ -3,6 +3,9 @@
   "criteria": {
     "child_sex": {
       "conditions": {
+        "entity": {
+          "type": "minecraft:player"
+        },
         "is_child": true
       },
       "trigger": "the-sex-mod:sex"

@@ -2,10 +2,7 @@
   "parent": "the-sex-mod:sex/child_sex",
   "criteria": {
     "multiple_child_sex": {
-      "conditions": {
-        "is_child": true
-      },
-      "trigger": "the-sex-mod:sex"
+      "trigger": "minecraft:impossible"
     }
   },
   "display": {

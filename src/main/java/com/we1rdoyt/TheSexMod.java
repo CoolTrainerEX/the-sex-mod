@@ -89,7 +89,7 @@ public class TheSexMod implements ModInitializer {
 								.getEntityInteractionRange() * player.getEntityInteractionRange()) {
 							player.getInventory().removeOne(itemStack);
 							itemStack.remove(ModDataComponentTypes.TARGET_ENTITY);
-							player.getInventory().offerOrDrop(itemStack);
+							player.giveOrDropStack(itemStack);
 							player.sendMessage(entity == null
 									? Text.translatable("item.the-sex-mod.consent.message.entity_does_not_exist")
 									: Text.translatable("item.the-sex-mod.consent.message.out_of_range",

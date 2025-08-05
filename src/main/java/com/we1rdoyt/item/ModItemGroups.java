@@ -48,6 +48,8 @@ public class ModItemGroups {
                                     PotionContentsComponent.createStack(Items.LINGERING_POTION, ModPotions.LONG_SEX));
                             entries.add(
                                     PotionContentsComponent.createStack(Items.LINGERING_POTION, ModPotions.STRONG_SEX));
+                            entries.add(ModItems.CHILD);
+                            entries.add(ModItems.COOKED_CHILD);
                         }).build());
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
@@ -61,6 +63,11 @@ public class ModItemGroups {
             entries.add(ModItems.CONDOM_LEGGINGS);
             entries.add(ModItems.CONDOM_BOOTS);
             entries.add(ModItems.CONDOM_HORSE_ARMOR);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(entries -> {
+            entries.add(ModItems.CHILD);
+            entries.add(ModItems.COOKED_CHILD);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {

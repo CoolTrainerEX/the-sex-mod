@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_child": {
+      "conditions": {
+        "items": [
+          {
+            "items": "the-sex-mod:child"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "the-sex-mod:cooked_child_from_campfire_cooking"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_child"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "the-sex-mod:cooked_child_from_campfire_cooking"
+    ]
+  }
+}
