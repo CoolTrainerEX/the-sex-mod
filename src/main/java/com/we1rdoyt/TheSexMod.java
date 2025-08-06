@@ -107,7 +107,7 @@ public class TheSexMod implements ModInitializer {
 					sex.endSex();
 			}
 
-			SEX_LIST.removeIf((sex) -> sex.isEnded());
+			SEX_LIST.removeIf(sex -> sex.isEnded());
 		});
 
 		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
@@ -163,6 +163,6 @@ public class TheSexMod implements ModInitializer {
 	 * @return True if entity is found
 	 */
 	public static boolean sexDataContains(LivingEntity entity) {
-		return SEX_LIST.stream().anyMatch((sex) -> sex.getEntity() == entity || sex.getTarget() == entity);
+		return SEX_LIST.stream().anyMatch(sex -> sex.getEntity() == entity || sex.getTarget() == entity);
 	}
 }
