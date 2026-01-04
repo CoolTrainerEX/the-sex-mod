@@ -1,0 +1,32 @@
+{
+  "parent": "the-sex-mod:sex/sex",
+  "criteria": {
+    "sex_success": {
+      "conditions": {
+        "successful": true
+      },
+      "trigger": "the-sex-mod:sex_complete"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.sex.sex_success.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:spectral_arrow"
+    },
+    "title": {
+      "translate": "advancements.sex.sex_success.title"
+    }
+  },
+  "requirements": [
+    [
+      "sex_success"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  }
+}

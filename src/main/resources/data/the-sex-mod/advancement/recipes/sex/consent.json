@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_opium": {
+      "conditions": {
+        "items": [
+          {
+            "items": "the-sex-mod:opium"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "the-sex-mod:consent"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_opium"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "the-sex-mod:consent"
+    ]
+  }
+}

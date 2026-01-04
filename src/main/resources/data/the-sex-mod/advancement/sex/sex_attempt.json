@@ -1,0 +1,25 @@
+{
+  "parent": "the-sex-mod:sex/consent",
+  "criteria": {
+    "sex_attempt": {
+      "trigger": "the-sex-mod:sex"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.sex.sex_attempt.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:arrow"
+    },
+    "title": {
+      "translate": "advancements.sex.sex_attempt.title"
+    }
+  },
+  "requirements": [
+    [
+      "sex_attempt"
+    ]
+  ]
+}

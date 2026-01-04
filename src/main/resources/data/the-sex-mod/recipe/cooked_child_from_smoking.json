@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "cookingtime": 100,
+  "experience": 0.35,
+  "ingredient": "the-sex-mod:child",
+  "result": {
+    "id": "the-sex-mod:cooked_child"
+  }
+}

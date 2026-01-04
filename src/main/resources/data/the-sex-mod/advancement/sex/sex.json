@@ -1,0 +1,31 @@
+{
+  "parent": "the-sex-mod:sex/sex_attempt",
+  "criteria": {
+    "sex": {
+      "conditions": {
+        "consent": true
+      },
+      "trigger": "the-sex-mod:sex"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.sex.sex.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:spectral_arrow"
+    },
+    "title": {
+      "translate": "advancements.sex.sex.title"
+    }
+  },
+  "requirements": [
+    [
+      "sex"
+    ]
+  ],
+  "rewards": {
+    "experience": 25
+  }
+}

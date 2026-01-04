@@ -1,0 +1,34 @@
+{
+  "parent": "the-sex-mod:sex/sex_potion",
+  "criteria": {
+    "std": {
+      "conditions": {
+        "effects": {
+          "the-sex-mod:std": {}
+        }
+      },
+      "trigger": "minecraft:effects_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.sex.std.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:poisonous_potato"
+    },
+    "title": {
+      "translate": "advancements.sex.std.title"
+    }
+  },
+  "requirements": [
+    [
+      "std"
+    ]
+  ],
+  "rewards": {
+    "experience": 25
+  }
+}
