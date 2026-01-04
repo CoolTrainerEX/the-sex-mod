@@ -3,15 +3,15 @@
 	"id": "the-sex-mod",
 	"version": "${version}",
 	"name": "The Sex Mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "This is The Sex Mod",
 	"authors": [
-		"Me!"
+		"CoolTrainerEX"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://We1rdoYT.github.io",
+		"sources": "https://github.com/CoolTrainerEX/the-sex-mod"
 	},
-	"license": "CC0-1.0",
+	"license": "CC BY-ND 4.0",
 	"icon": "assets/the-sex-mod/icon.png",
 	"environment": "*",
 	"entrypoints": {
