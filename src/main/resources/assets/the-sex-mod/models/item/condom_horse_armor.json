@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "the-sex-mod:item/condom_horse_armor"
-  }
-}
